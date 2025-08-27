@@ -11,7 +11,7 @@ public class Aluno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    // colocar atributo senha //
     private String nome;
     private String email;
     private int idade;

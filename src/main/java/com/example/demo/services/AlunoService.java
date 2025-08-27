@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.dto.AlunoDTO;
 import com.example.demo.entity.Aluno;
 import com.example.demo.repository.AlunoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 @Service
 public class AlunoService {
 
+    @Autowired
     private final AlunoRepository alunoRepository;
 
     public AlunoService(AlunoRepository alunoRepository) {
@@ -30,10 +32,21 @@ public class AlunoService {
         return toDTO(aluno);
     }
 
+    // Aqui pode-se retornar Optional também, se não quiser tratar o erro.
     public AlunoDTO buscarPorId(Long id) {
         Aluno aluno = alunoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
         return toDTO(aluno);
+    }
+
+    public Aluno update(Long id, Aluno updateAluno) {
+        return alunoRepository.findById(id)
+                .map( aluno -> {
+                    aluno.setNome(updateAluno.getNome());
+                    aluno.setEmail(updateAluno.getEmail());
+                    aluno.setIdade(updateAluno.getIdade());
+                    return alunoRepository.save(aluno);
+                }).orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
     }
 
     public void deletar(Long id) {
