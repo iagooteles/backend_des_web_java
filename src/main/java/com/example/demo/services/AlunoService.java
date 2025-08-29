@@ -39,13 +39,13 @@ public class AlunoService {
         return toDTO(aluno);
     }
 
-    public Aluno update(Long id, Aluno updateAluno) {
+    public AlunoDTO update(Long id, AlunoDTO updateAluno) {
         return alunoRepository.findById(id)
                 .map( aluno -> {
                     aluno.setNome(updateAluno.getNome());
                     aluno.setEmail(updateAluno.getEmail());
                     aluno.setIdade(updateAluno.getIdade());
-                    return alunoRepository.save(aluno);
+                    return toDTO(alunoRepository.save(aluno));
                 }).orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
     }
 
