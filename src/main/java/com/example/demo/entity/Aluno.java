@@ -11,10 +11,10 @@ public class Aluno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    // colocar atributo senha //
     private String nome;
     private String email;
     private int idade;
+    private String senha;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -27,4 +27,7 @@ public class Aluno {
 
     public int getIdade() { return idade; }
     public void setIdade(int idade) { this.idade = idade; }
+    
+    public String getSenha() { return senha; }
+    public void setSenha(String senha) { this.senha = senha; }
 }

@@ -45,6 +45,7 @@ public class AlunoService {
                     aluno.setNome(updateAluno.getNome());
                     aluno.setEmail(updateAluno.getEmail());
                     aluno.setIdade(updateAluno.getIdade());
+                    aluno.setSenha(updateAluno.getSenha());
                     return toDTO(alunoRepository.save(aluno));
                 }).orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
     }
@@ -59,6 +60,7 @@ public class AlunoService {
         dto.setNome(aluno.getNome());
         dto.setEmail(aluno.getEmail());
         dto.setIdade(aluno.getIdade());
+        dto.setSenha(aluno.getSenha());
         return dto;
     }
 
@@ -68,6 +70,7 @@ public class AlunoService {
         aluno.setNome(dto.getNome());
         aluno.setEmail(dto.getEmail());
         aluno.setIdade(dto.getIdade());
+        aluno.setSenha(dto.getSenha());
         return aluno;
     }
 }

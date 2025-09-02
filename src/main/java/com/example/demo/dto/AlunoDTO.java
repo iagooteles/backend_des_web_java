@@ -5,6 +5,7 @@ public class AlunoDTO {
     private String nome;
     private String email;
     private int idade;
+    private String senha;
 
     // Getters e Setters
     public Long getId() { return id; }
@@ -18,4 +19,7 @@ public class AlunoDTO {
 
     public int getIdade() { return idade; }
     public void setIdade(int idade) { this.idade = idade; }
+
+    public String getSenha() { return senha; }
+    public void setSenha(String senha) { this.senha = senha; }
 }

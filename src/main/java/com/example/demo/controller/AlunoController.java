@@ -31,7 +31,9 @@ public class AlunoController {
     }
 
     @PutMapping
-    public AlunoDTO atualizarAluno(@RequestBody AlunoDTO dto) { return alunoService.update(dto.getId(), dto);}
+    public AlunoDTO atualizarAluno(@RequestBody AlunoDTO dto) { 
+        return alunoService.update(dto.getId(), dto);
+    }
 
     @GetMapping("/{id}")
     public AlunoDTO buscarPorId(@PathVariable Long id) {
