@@ -34,6 +34,12 @@ public class AlunoController {
     public AlunoDTO atualizarAluno(@RequestBody AlunoDTO dto) { 
         return alunoService.update(dto.getId(), dto);
     }
+    
+    // Recebendo o id por parametro e não pelo body 
+    @PutMapping("/{id}")
+    public AlunoDTO atualizarAluno(@PathVariable Long id, @RequestBody AlunoDTO dto) { 
+        return alunoService.update(id, dto);
+    }
 
     @GetMapping("/{id}")
     public AlunoDTO buscarPorId(@PathVariable Long id) {
