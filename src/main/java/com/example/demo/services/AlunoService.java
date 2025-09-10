@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,34 +20,33 @@ public class AlunoService {
         this.alunoRepository = alunoRepository;
     }
 
-    public List<AlunoDTO> listarTodos() {
-        List<Aluno> alunos = alunoRepository.findAll();
-        return alunos.stream()
+    public List<AlunoDTO> findAllALunos() {
+        return alunoRepository.findAll()
+                .stream()
                 .map(this::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    public AlunoDTO salvar(AlunoDTO dto) {
-        Aluno aluno = toEntity(dto);
-        aluno = alunoRepository.save(aluno);
-        return toDTO(aluno);
+    public AlunoDTO saveAluno(Aluno aluno) {
+        Aluno alunoSaved = alunoRepository.save(aluno);
+        return toDTO(alunoSaved);
     }
 
-    // Aqui pode-se retornar Optional também, se não quiser tratar o erro.
-    public AlunoDTO buscarPorId(Long id) {
-        Aluno aluno = alunoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
-        return toDTO(aluno);
+    public Optional<AlunoDTO> findAlunoById(Long id) {
+        return alunoRepository.findById(id).map(this::toDTO);
     }
 
-    public AlunoDTO update(Long id, AlunoDTO updateAluno) {
+    public AlunoDTO update(Long id, Aluno updateAluno) {
         return alunoRepository.findById(id)
                 .map( aluno -> {
                     aluno.setNome(updateAluno.getNome());
                     aluno.setEmail(updateAluno.getEmail());
                     aluno.setIdade(updateAluno.getIdade());
                     aluno.setSenha(updateAluno.getSenha());
-                    return toDTO(alunoRepository.save(aluno));
+
+                    Aluno alunoSaved = alunoRepository.save(aluno);
+                    return toDTO(alunoSaved);
+
                 }).orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
     }
 
@@ -55,13 +55,7 @@ public class AlunoService {
     }
 
     private AlunoDTO toDTO(Aluno aluno) {
-        AlunoDTO dto = new AlunoDTO();
-        dto.setId(aluno.getId());
-        dto.setNome(aluno.getNome());
-        dto.setEmail(aluno.getEmail());
-        dto.setIdade(aluno.getIdade());
-        dto.setSenha(aluno.getSenha());
-        return dto;
+        return new AlunoDTO(aluno.getId(), aluno.getNome(), aluno.getEmail(), aluno.getIdade());
     }
 
     private Aluno toEntity(AlunoDTO dto) {
@@ -70,7 +64,6 @@ public class AlunoService {
         aluno.setNome(dto.getNome());
         aluno.setEmail(dto.getEmail());
         aluno.setIdade(dto.getIdade());
-        aluno.setSenha(dto.getSenha());
         return aluno;
     }
 }

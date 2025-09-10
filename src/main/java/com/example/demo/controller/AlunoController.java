@@ -1,13 +1,14 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.AlunoDTO;
+import com.example.demo.entity.Aluno;
 import com.example.demo.services.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/alunos")
@@ -22,28 +23,28 @@ public class AlunoController {
 
     @GetMapping
     public List<AlunoDTO> listar() {
-        return alunoService.listarTodos();
+        return alunoService.findAllALunos();
     }
 
     @PostMapping
-    public AlunoDTO criarAluno(@RequestBody AlunoDTO dto) {
-        return alunoService.salvar(dto);
+    public AlunoDTO criarAluno(@RequestBody Aluno aluno) {
+        return alunoService.saveAluno(aluno);
     }
 
     @PutMapping
-    public AlunoDTO atualizarAluno(@RequestBody AlunoDTO dto) { 
-        return alunoService.update(dto.getId(), dto);
+    public AlunoDTO atualizarAluno(@RequestBody Aluno aluno) {
+        return alunoService.update(aluno.getId(), aluno);
     }
     
     // Recebendo o id por parametro e não pelo body 
     @PutMapping("/{id}")
-    public AlunoDTO atualizarAluno(@PathVariable Long id, @RequestBody AlunoDTO dto) { 
-        return alunoService.update(id, dto);
+    public AlunoDTO atualizarAluno(@PathVariable Long id, @RequestBody Aluno aluno) {
+        return alunoService.update(id, aluno);
     }
 
     @GetMapping("/{id}")
-    public AlunoDTO buscarPorId(@PathVariable Long id) {
-        return alunoService.buscarPorId(id);
+    public Optional<AlunoDTO> buscarPorId(@PathVariable Long id) {
+        return alunoService.findAlunoById(id);
     }
 
     // jeito q o prof fez =>
