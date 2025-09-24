@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.dto.AlunoDTO;
 import com.example.demo.entity.Aluno;
 import com.example.demo.entity.Endereco;
+import com.example.demo.repository.AlunoRepository;
 import com.example.demo.repository.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,9 +15,11 @@ import java.util.Optional;
 public class EnderecoService {
     
     private final EnderecoRepository enderecoRepository;
+    private final AlunoRepository alunoRepository;
 
-    public EnderecoService(EnderecoRepository enderecoRepository) {
+    public EnderecoService(EnderecoRepository enderecoRepository, AlunoRepository alunoRepository) {
         this.enderecoRepository = enderecoRepository;
+        this.alunoRepository = alunoRepository;
     }
 
     public List<Endereco> findAllEnderecos() {
@@ -27,7 +30,11 @@ public class EnderecoService {
         return enderecoRepository.findById(id);
     }
 
-    public Endereco saveEndereco(Endereco endereco) {
+    public Endereco saveEndereco(Long alunoId, Endereco endereco) {
+        Aluno aluno = alunoRepository.findById(alunoId)
+                .orElseThrow(() -> new RuntimeException("Esse ID Aluno não existe."));
+
+        endereco.setAluno(aluno);
         return enderecoRepository.save(endereco);
     }
 
