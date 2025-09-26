@@ -51,6 +51,22 @@ public class EnderecoService {
                 }).orElseThrow(() -> new RuntimeException("Endereço não encontrado"));
     }
 
+    @Transacitional
+    public Endereco updateEnderecoByAlunoId(Long alunoId, Endereco novoEndereco) {
+        Aluno aluno = alunoRepository.findById(alunoId);
+
+        Endereco enderecoAtual = enderecoRepository.findAlunoById(alunoId);
+
+        enderecoAtual.setLogradouro(novoEndereco.getLogradouro);
+        enderecoAtual.setCep(novoEndereco.getCep);
+        enderecoAtual.setComplemento(novoEndereco.getComplemento);
+        enderecoAtual.setNumero(novoEndereco.getNumero);
+
+        enderecoAtual.setAluno(aluno);
+        
+        return enderecoRepository.save(enderecoAtual);
+    }
+
     public void deletarEndereco(Long id) {
         enderecoRepository.deleteById(id);
     }

@@ -24,6 +24,11 @@ public class EnderecoController {
         return enderecoService.saveEndereco(id, endereco);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Endereco> updateEndereco(@PathVariable Long id, @RequestBody Endereco endereco) {
+        // ...
+    }
+
 
 
 }
